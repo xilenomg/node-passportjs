@@ -24,6 +24,9 @@ var PORT = process.env.PORT || 8080;
 var databaseConfig = require('./config/database.js');
 mongoose.connect(databaseConfig.url);
 
+//passport
+require('./config/passport')(passport);
+
 
 //APP use
 app.use(morgan('dev'));
@@ -42,8 +45,15 @@ app.use(session({ secret: 'avenuecode-passport-training', resave: true, saveUnin
 //https://www.npmjs.com/package/express-session
 
 
+//passport setup
+app.use(passport.initialize());
+app.use(passport.session());
+
 //flash message setup
 app.use(flash());
+
+//routes
+require('./app/routes.js')(app, passport);
 
 //listen to port
 app.listen(PORT, function() {
