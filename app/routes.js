@@ -1,5 +1,6 @@
 var express = require('express');
 var appRouter = express.Router();
+var authRouter = express.Router();
 
 module.exports = function(app, passport) {
     //normal Routes
@@ -38,10 +39,10 @@ module.exports = function(app, passport) {
         // allow flash messages
         failureFlash: true
     }));
-    appRouter.get('/signup', function(request, response){
+    appRouter.get('/signup', function(request, response) {
         res.render('signup.ejs');
     });
-    app.post('/signup', passport.authenticate('local-signup', {
+    appRouter.post('/signup', passport.authenticate('local-signup', {
         // redirect to the secure profile section
         successRedirect: '/profile',
         // redirect back to the signup page if there is an error
@@ -49,6 +50,15 @@ module.exports = function(app, passport) {
         // allow flash messages
         failureFlash: 'true'
     }))
+
+    //facebook
+    //scopes: https://developers.facebook.com/docs/facebook-login/permissions
+    authRouter.get('/facebook', passport.authenticate('facebook', { scope: 'email' }));
+
+    authRouter.get('/facebook/callback', passport.authenticate('facebook', {
+        successRedirect: '/profile',
+        failureRedirect: '/'
+    }));
 
 
 
@@ -58,6 +68,7 @@ module.exports = function(app, passport) {
     //unlink
 
     app.use('/', appRouter);
+    app.use('/auth', authRouter);
 };
 
 //middleware that will verify whether user is logged in
