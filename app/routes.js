@@ -60,6 +60,14 @@ module.exports = function(app, passport) {
         failureRedirect: '/'
     }));
 
+    //twitter
+    authRouter.get('/twitter', passport.authenticate('twitter', { scope: 'email' }));
+
+    authRouter.get('/twitter/callback', passport.authenticate('twitter', {
+        successRedirect: '/profile',
+        failureRedirect: '/'
+    }));
+
 
 
 
