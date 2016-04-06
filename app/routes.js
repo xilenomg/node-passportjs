@@ -1,6 +1,7 @@
 var express = require('express');
 var appRouter = express.Router();
 var authRouter = express.Router();
+var connectRouter = express.Router();
 
 module.exports = function(app, passport) {
     //normal Routes
@@ -69,7 +70,7 @@ module.exports = function(app, passport) {
     }));
 
     //google
-    authRouter.get('/google', passport.authenticate('google', { scope: ['profile','email'] }));
+    authRouter.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
     authRouter.get('/google/callback', passport.authenticate('google', {
         successRedirect: '/profile',
@@ -81,10 +82,21 @@ module.exports = function(app, passport) {
 
     //authorize - logged in, connecting other social account
 
+    //local
+    connectRouter.get('/connect/local', function(request, response) {
+        res.render('connect-local.ejs');
+    });
+    connectRouter.post('/connect/local', passport.authenticate('local-signup', {
+        successRedirect: '/profile', // redirect to the secure profile section
+        failureRedirect: '/connect/local', // redirect back to the signup page if there is an error
+        failureFlash: true // allow flash messages
+    }));
+
     //unlink
 
     app.use('/', appRouter);
     app.use('/auth', authRouter);
+    app.use('/connect', connectRouter);
 };
 
 //middleware that will verify whether user is logged in
