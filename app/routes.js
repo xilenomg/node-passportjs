@@ -68,6 +68,14 @@ module.exports = function(app, passport) {
         failureRedirect: '/'
     }));
 
+    //google
+    authRouter.get('/google', passport.authenticate('google', { scope: ['profile','email'] }));
+
+    authRouter.get('/google/callback', passport.authenticate('google', {
+        successRedirect: '/profile',
+        failureRedirect: '/'
+    }));
+
 
 
 
