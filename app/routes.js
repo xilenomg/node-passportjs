@@ -83,20 +83,30 @@ module.exports = function(app, passport) {
     //authorize - logged in, connecting other social account
 
     //local
-    connectRouter.get('/connect/local', function(request, response) {
+    connectRouter.get('/local', function(request, response) {
         res.render('connect-local.ejs');
     });
-    connectRouter.post('/connect/local', passport.authenticate('local-signup', {
+    connectRouter.post('/local', passport.authenticate('local-signup', {
         successRedirect: '/profile', // redirect to the secure profile section
         failureRedirect: '/connect/local', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
     }));
 
     //Facebook
-    connectRouter.get('/connect/facebook', passport.authorize('facebook', { scope: 'email' }));
+    connectRouter.get('/facebook', passport.authorize('facebook', { scope: 'email' }));
 
-    connectRouter.get('/connect/facebook/callback',
+    connectRouter.get('/facebook/callback',
         passport.authorize('facebook', {
+            successRedirect: '/profile',
+            failureRedirect: '/'
+        }));
+
+    //Twitter
+    connectRouter.get('/twitter', passport.authorize('twitter', { scope: 'email' }));
+
+    // handle the callback after twitter has authorized the user
+    connectRouter.get('/twitter/callback',
+        passport.authorize('twitter', {
             successRedirect: '/profile',
             failureRedirect: '/'
         }));
