@@ -92,6 +92,15 @@ module.exports = function(app, passport) {
         failureFlash: true // allow flash messages
     }));
 
+    //Facebook
+    connectRouter.get('/connect/facebook', passport.authorize('facebook', { scope: 'email' }));
+
+    connectRouter.get('/connect/facebook/callback',
+        passport.authorize('facebook', {
+            successRedirect: '/profile',
+            failureRedirect: '/'
+        }));
+
     //unlink
 
     app.use('/', appRouter);
