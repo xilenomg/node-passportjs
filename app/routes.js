@@ -111,6 +111,16 @@ module.exports = function(app, passport) {
             failureRedirect: '/'
         }));
 
+    //Google
+    connectRouter.get('/google', passport.authorize('google', { scope: ['profile', 'email'] }));
+
+    // the callback after google has authorized the user
+    connectRouter.get('/google/callback',
+        passport.authorize('google', {
+            successRedirect: '/profile',
+            failureRedirect: '/'
+        }));
+
     //unlink
 
     app.use('/', appRouter);
