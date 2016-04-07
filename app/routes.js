@@ -41,7 +41,7 @@ module.exports = function(app, passport) {
         failureFlash: true
     }));
     appRouter.get('/signup', function(request, response) {
-        res.render('signup.ejs');
+        response.render('signup.ejs');
     });
     appRouter.post('/signup', passport.authenticate('local-signup', {
         // redirect to the secure profile section
@@ -84,7 +84,7 @@ module.exports = function(app, passport) {
 
     //local
     connectRouter.get('/local', function(request, response) {
-        res.render('connect-local.ejs');
+        response.render('connect-local.ejs');
     });
     connectRouter.post('/local', passport.authenticate('local-signup', {
         successRedirect: '/profile', // redirect to the secure profile section
