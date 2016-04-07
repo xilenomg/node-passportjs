@@ -29,7 +29,7 @@ module.exports = function(app, passport) {
     //local
     //login form
     appRouter.get('/login', function(request, response) {
-        res.render('login.ejs');
+        response.render('login.ejs');
     });
     //process login form
     appRouter.post('/login', passport.authenticate('local-login', {
