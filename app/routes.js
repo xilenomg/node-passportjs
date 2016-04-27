@@ -9,7 +9,7 @@ module.exports = function(app, passport) {
 
     //index
     appRouter.get('/', function(request, response) {
-        response.render('index.ejs');
+        response.render('index.ejs', { message: request.flash('loginMessage') });
     });
 
     //profile if logged
@@ -30,8 +30,9 @@ module.exports = function(app, passport) {
     //local
     //login form
     appRouter.get('/login', function(request, response) {
-        response.render('login.ejs');
+        response.render('login.ejs', { message: request.flash('loginMessage') });
     });
+
     //process login form
     appRouter.post('/login', passport.authenticate('local-login', {
         // redirect to the secure profile section
@@ -41,16 +42,18 @@ module.exports = function(app, passport) {
         // allow flash messages
         failureFlash: true
     }));
+
     appRouter.get('/signup', function(request, response) {
-        response.render('signup.ejs');
+        response.render('signup.ejs', { message: request.flash('signupMessage') });
     });
+
     appRouter.post('/signup', passport.authenticate('local-signup', {
         // redirect to the secure profile section
         successRedirect: '/profile',
         // redirect back to the signup page if there is an error
         failureRedirect: '/signup',
         // allow flash messages
-        failureFlash: 'true'
+        failureFlash: true
     }))
 
     //facebook
@@ -82,7 +85,7 @@ module.exports = function(app, passport) {
 
     //local
     connectRouter.get('/local', function(request, response) {
-        response.render('connect-local.ejs');
+        response.render('connect-local.ejs', { message: request.flash('loginMessage') });
     });
     connectRouter.post('/local', passport.authenticate('local-signup', {
         successRedirect: '/profile', // redirect to the secure profile section
@@ -131,8 +134,8 @@ module.exports = function(app, passport) {
     });
 
     //facebook
-    unlinkRouter.get('/facebook', function(req, res) {
-        var user            = req.user;
+    unlinkRouter.get('/facebook', function(request, response) {
+        var user            = request.user;
         user.facebook.token = undefined;
         user.save(function(err) {
             res.redirect('/profile');
@@ -140,9 +143,18 @@ module.exports = function(app, passport) {
     });
 
     //twitter
-    unlinkRouter.get('/twitter', function(req, res) {
-        var user           = req.user;
+    unlinkRouter.get('/twitter', function(request, response) {
+        var user           = request.user;
         user.twitter.token = undefined;
+        user.save(function(err) {
+           res.redirect('/profile');
+        });
+    });
+
+    //google
+    unlinkRouter.get('/google', function(request, response) {
+        var user          = request.user;
+        user.google.token = undefined;
         user.save(function(err) {
            res.redirect('/profile');
         });

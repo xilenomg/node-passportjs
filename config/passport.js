@@ -48,12 +48,16 @@ module.exports = function(passport) {
                         return done(err);
 
                     // no user found
-                    if (!user)
-                        return console.log('No user found.');
+                    if (!user){
+                        // return console.log('No user found.');
+                        return done(null, false, request.flash('loginMessage', 'No user found.'));
+                    }
 
                     // invalid password
-                    if (!user.validPassword(password))
-                        return console.log('Invalid password');
+                    if (!user.validPassword(password)){
+                        return done(null, false, request.flash('loginMessage', 'Invalid password.'));
+                        // return console.log('Invalid password');
+                    }
 
                     // all is well, return user
                     else
@@ -85,7 +89,8 @@ module.exports = function(passport) {
 
                         // check to see if theres already a user with that email
                         if (user) {
-                            return console.log('That email is already taken.');
+                            // return console.log('That email is already taken.');
+                            return done(null, false, request.flash('loginMessage', 'That email is already taken.'));
                         } else {
 
                             // create the user
@@ -113,7 +118,8 @@ module.exports = function(passport) {
                         }
 
                         if (user) {
-                            return console.log('That email is already taken.');
+                            // return console.log('That email is already taken.');
+                            return done(null, false, request.flash('loginMessage', 'That email is already taken.'));
                             // Using 'loginMessage instead of signupMessage because it's used by /connect/local'
                         } else {
                             var user = request.user;
