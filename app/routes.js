@@ -130,6 +130,15 @@ module.exports = function(app, passport) {
         });
     });
 
+    //facebook
+    unlinkRouter.get('/facebook', function(req, res) {
+        var user            = req.user;
+        user.facebook.token = undefined;
+        user.save(function(err) {
+            res.redirect('/profile');
+        });
+    });
+
     app.use('/', appRouter);
     app.use('/auth', authRouter);
     app.use('/connect', connectRouter);
