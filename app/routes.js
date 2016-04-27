@@ -2,6 +2,7 @@ var express = require('express');
 var appRouter = express.Router();
 var authRouter = express.Router();
 var connectRouter = express.Router();
+var unlinkRouter = express.Router();
 
 module.exports = function(app, passport) {
     //normal Routes
@@ -119,10 +120,20 @@ module.exports = function(app, passport) {
         }));
 
     //unlink
+    //local
+    unlinkRouter.get('/local', function(request, response) {
+        var user            = request.user;
+        user.local.email    = undefined;
+        user.local.password = undefined;
+        user.save(function(err) {
+            response.redirect('/profile');
+        });
+    });
 
     app.use('/', appRouter);
     app.use('/auth', authRouter);
     app.use('/connect', connectRouter);
+    app.use('/unlink', unlinkRouter);
 };
 
 //middleware that will verify whether user is logged in
