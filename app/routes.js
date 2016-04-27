@@ -7,19 +7,19 @@ module.exports = function(app, passport) {
     //normal Routes
 
     //index
-    appRouter.route('/').get(function(request, response) {
+    appRouter.get('/', function(request, response) {
         response.render('index.ejs');
     });
 
     //profile if logged
-    appRouter.route('/profile', isLoggedIn, function(request, response) {
+    appRouter.get('/profile', isLoggedIn, function(request, response) {
         response.render('profile.ejs', {
             user: request.user
         });
     });
 
     //logout
-    appRouter.route('/logout', function(request, response) {
+    appRouter.get('/logout', function(request, response) {
         request.logout();
         response.redirect('/');
     });
@@ -76,9 +76,6 @@ module.exports = function(app, passport) {
         successRedirect: '/profile',
         failureRedirect: '/'
     }));
-
-
-
 
     //authorize - logged in, connecting other social account
 
