@@ -139,6 +139,15 @@ module.exports = function(app, passport) {
         });
     });
 
+    //twitter
+    unlinkRouter.get('/twitter', function(req, res) {
+        var user           = req.user;
+        user.twitter.token = undefined;
+        user.save(function(err) {
+           res.redirect('/profile');
+        });
+    });
+
     app.use('/', appRouter);
     app.use('/auth', authRouter);
     app.use('/connect', connectRouter);
