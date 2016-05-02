@@ -138,7 +138,7 @@ module.exports = function(app, passport) {
         var user            = request.user;
         user.facebook.token = undefined;
         user.save(function(err) {
-            res.redirect('/profile');
+            response.redirect('/profile');
         });
     });
 
@@ -147,7 +147,7 @@ module.exports = function(app, passport) {
         var user           = request.user;
         user.twitter.token = undefined;
         user.save(function(err) {
-           res.redirect('/profile');
+           response.redirect('/profile');
         });
     });
 
@@ -156,7 +156,7 @@ module.exports = function(app, passport) {
         var user          = request.user;
         user.google.token = undefined;
         user.save(function(err) {
-           res.redirect('/profile');
+           response.redirect('/profile');
         });
     });
 
