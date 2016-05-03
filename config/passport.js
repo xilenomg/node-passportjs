@@ -90,7 +90,7 @@ module.exports = function(passport) {
                         // check to see if theres already a user with that email
                         if (user) {
                             // return console.log('That email is already taken.');
-                            return done(null, false, request.flash('loginMessage', 'That email is already taken.'));
+                            return done(null, false, request.flash('signupMessage', 'That email is already taken.'));
                         } else {
 
                             // create the user
